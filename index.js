@@ -9,7 +9,14 @@ const Product = require("./src/models/productModel");
 const User = require("./src/models/userModel");
 const Order = require("./src/models/orderModel");
 
-app.use(cors());
+// app.use(cors());
+app.use(
+    cors({
+        origin: 'https://e-commerce-niloy.netlify.app', // Replace with your Netlify app's domain
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Specify the HTTP methods you want to allow
+        credentials: true, // Include cookies when sending the request (if applicable)
+    })
+);
 app.use(express.json());
 
 connectDB();
