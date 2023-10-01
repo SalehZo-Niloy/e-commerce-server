@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema(
         },
         transactionId: {
             type: String,
-            required: true
+            required: false
         },
         orderList: {
             type: Array,
@@ -32,6 +32,14 @@ const orderSchema = new mongoose.Schema(
         },
         totalPrice: {
             type: String,
+            required: true
+        },
+        paymentMethod: {
+            type: String,
+            required: true
+        },
+        orderCompleted: {
+            type: Boolean,
             required: true
         }
     },
