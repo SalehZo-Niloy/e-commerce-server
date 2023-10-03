@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const Product = require("./src/models/productModel");
 const User = require("./src/models/userModel");
 const Order = require("./src/models/orderModel");
+const Invoice = require("./src/models/invoiceModel");
 const { default: mongoose } = require('mongoose');
 
 app.use(cors());
@@ -265,7 +266,7 @@ app.put('/completeOrder', async (req, res) => {
     try {
         const result = await Order.findOneAndUpdate(filter, update, options);
         if (result) {
-            return res.status(200).send(result?.orderCompleted);
+            return res.status(200).send(result);
         } else {
             return res.status(400).send("Something went wrong");
         }
@@ -325,6 +326,49 @@ app.get('/filter', async (req, res) => {
         return res.status(400).json(error);
     }
 });
+
+app.post('/addInvoice', async (req, res) => {
+    const invoice = req.body;
+
+    try {
+        const invoiceResult = await Invoice.create(invoice);
+
+        if (invoiceResult) {
+            return res.status(200).send('Invoice created successfully');
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(error);
+    }
+});
+
+app.get('/invoice', async (req, res) => {
+    try {
+        const invoice = await Invoice.find();
+
+        if (invoice) {
+            return res.status(200).json(invoice);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(error);
+    }
+})
+
+app.get('/invoice/:id', async (req, res) => {
+    const invoiceId = req?.params?.id;
+
+    try {
+        const invoice = await Invoice.findOne({ _id: invoiceId });
+
+        if (invoice) {
+            return res.status(200).json(invoice);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(error);
+    }
+})
 
 app.listen(port, () => {
     console.log(`listening on port: ${port}`)
